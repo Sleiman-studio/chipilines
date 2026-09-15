@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo | Chipilines Venezuela</title>
+    <meta name="description" content="Catálogo completo de decoración infantil. Explora todos nuestros productos con filtros y búsqueda.">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --cream: #faf7f2; --surface: #ffffff; --ink: #0f0f0f; --dark: #1a1a1a;
+            --gray: #6b6b6b; --gray-light: #a8a8a8; --border: #e8e2d8;
+            --accent: #d4a24c; --accent-dark: #b8892f;
+            --olive: #4a5d3a; --olive-light: #eef0e9;
+            --terracotta: #c8734c; --text: #3a3a3a; --text-light: #8a8a8a;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--cream); color: var(--text);
+            line-height: 1.7; overflow-x: hidden; font-weight: 400;
+            -webkit-font-smoothing: antialiased; padding-bottom: 100px;
+            cursor: none;
+        }
+        @media (max-width: 900px) { body { cursor: auto; } }
+
+        h1, h2, h3, h4 {
+            font-family: 'Fraunces', Georgia, serif;
+            color: var(--dark); font-weight: 500;
+            line-height: 1.05; letter-spacing: -0.025em;
+        }
+
+        .cursor-dot {
+            position: fixed; pointer-events: none; z-index: 9999;
+            width: 8px; height: 8px; background: var(--cream);
+            border-radius: 50%; transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
+        }
+        .cursor-dot.hover {
+            transform: translate(-50%, -50%) scale(1.8);
+            background: var(--accent); mix-blend-mode: normal;
+        }
+        @media (max-width: 900px) { .cursor-dot { display: none; } }
+
+        .scroll-progress {
+            position: fixed; top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--terracotta));
+            width: 0%; z-index: 10000;
+            transition: width 0.1s linear;
+        }
+
+        .top-bar {
+            background: var(--ink); color: var(--cream);
+            text-align: center; padding: 0.65rem 1rem;
+            font-size: 0.7rem; letter-spacing: 0.25em;
+            text-transform: uppercase; font-weight: 400;
+            overflow: hidden; position: relative; height: 33px;
+        }
+        .top-bar-track {
+            display: flex; gap: 4rem;
+            animation: scrollTicker 30s linear infinite;
+            position: absolute; white-space: nowrap; left: 0;
+        }
+        .top-bar-track span { flex-shrink: 0; }
+        .top-bar-track span::before {
+            content: '✦'; color: var(--accent);
+            margin-right: 2rem; font-size: 0.6rem;
+        }
+        @keyframes scrollTicker {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        header {
+            position: sticky; top: 0;
+            background: rgba(250, 247, 242, 0.92);
+            backdrop-filter: blur(20px) saturate(1.5);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+        nav {
+            max-width: 1400px; margin: 0 auto;
+            padding: 1.3rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { text-decoration: none; display: flex; flex-direction: column; line-height: 1; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .logo:hover { transform: scale(1.03); }
+        .logo strong { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--ink); letter-spacing: -0.03em; }
+        .logo small { font-size: 0.55rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--text-light); margin-top: 4px; font-weight: 500; }
+
+        .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--text); font-weight: 400;
+            font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em;
+            transition: color 0.3s; position: relative; padding: 4px 0;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 1px; background: var(--ink);
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+
+        .cart-icon {
+            background: var(--ink); color: var(--cream); border: none;
+            padding: 0.7rem 1.6rem; font-weight: 500; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.15em;
+            cursor: pointer; font-family: inherit;
+            transition: all 0.4s; display: flex; align-items: center; gap: 10px;
+            position: relative; overflow: hidden;
+        }
+        .cart-icon::before {
+            content: ''; position: absolute; inset: 0;
+            background: var(--olive); transform: translateY(101%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 0;
+        }
+        .cart-icon:hover::before { transform: translateY(0); }
+        .cart-icon > * { position: relative; z-index: 1; }
+        .cart-count {
+            background: var(--accent); color: var(--ink);
+            border-radius: 50%; width: 18px; height: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem; font-weight: 700;
+        }
+
+        .page-hero {
+            max-width: 1400px; margin: 0 auto;
+            padding: 5rem 3rem 2.5rem; text-align: center;
+        }
+        .page-hero .eyebrow {
+            display: inline-flex; align-items: center; gap: 12px;
+            color: var(--olive); font-size: 0.68rem;
+            letter-spacing: 0.35em; text-transform: uppercase;
+            margin-bottom: 1.5rem; font-weight: 500;
+        }
+        .page-hero .eyebrow::before, .page-hero .eyebrow::after {
+            content: ''; width: 30px; height: 1px; background: var(--olive);
+        }
+        .page-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 1.2rem; font-weight: 400;
+            line-height: 0.98; letter-spacing: -0.03em;
+        }
+        .page-hero h1 em { font-style: italic; color: var(--olive); }
+        .page-hero p {
+            color: var(--text-light); font-size: 1.05rem;
+            max-width: 620px; margin: 0 auto;
+            font-weight: 300; line-height: 1.9;
+        }
+
+        .toolbar {
+            max-width: 1400px; margin: 0 auto;
+            padding: 1rem 3rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 220px;
+            max-width: 420px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.88rem;
+            color: var(--ink);
+            transition: all 0.3s;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--olive);
+            box-shadow: 0 0 0 3px rgba(74, 93, 58, 0.08);
+        }
+        .search-box::before {
+            content: '⌕';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .results-count {
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .results-count strong { color: var(--ink); font-weight: 600; }
+
+        .sort-select {
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--ink);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%230f0f0f' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            transition: all 0.3s;
+        }
+        .sort-select:focus { outline: none; border-color: var(--olive); }
+
+        .filters {
+            max-width: 1400px; margin: 0 auto;
+            padding: 1.5rem 3rem;
+            display: flex; gap: 0.6rem;
+            justify-content: flex-start; flex-wrap: wrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .filters::-webkit-scrollbar { display: none; }
+        .filter-btn {
+            padding: 0.55rem 1.3rem;
+            background: transparent; color: var(--text);
+            border: 1px solid var(--border);
+            font-family: inherit; font-weight: 400;
+            font-size: 0.68rem; text-transform: uppercase;
+            letter-spacing: 0.15em; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .filter-btn .filter-count {
+            background: var(--border);
+            color: var(--text);
+            padding: 0.1rem 0.45rem;
+            font-size: 0.6rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .filter-btn:hover { border-color: var(--olive); color: var(--olive); transform: translateY(-2px); }
+        .filter-btn.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+        .filter-btn.active .filter-count { background: var(--accent); color: var(--ink); }
+
+        .catalog { max-width: 1400px; margin: 0 auto; padding: 1rem 3rem 4rem; }
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .item {
+            background: var(--surface); border: 1px solid var(--border);
+            overflow: hidden; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer; display: flex; flex-direction: column;
+            position: relative; transform-style: preserve-3d; will-change: transform;
+            opacity: 1; transform: scale(1);
+        }
+        .item.hidden { display: none; }
+        .item.animate-in { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 60px rgba(15, 15, 15, 0.08);
+            border-color: var(--olive);
+        }
+        .item-image {
+            height: 230px; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden; background: var(--cream);
+        }
+        .item-image .emoji {
+            font-size: 3.8rem;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            line-height: 1; opacity: 0.9;
+        }
+        .item:hover .item-image .emoji { transform: scale(1.15) rotate(-8deg); }
+        .item-image .photo-hint {
+            position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+            font-size: 0.52rem; letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--text-light); background: rgba(250, 247, 242, 0.92);
+            padding: 0.25rem 0.8rem; white-space: nowrap; font-weight: 400;
+        }
+        .item-badge {
+            position: absolute; top: 12px; right: 12px;
+            background: var(--ink); color: var(--cream);
+            padding: 0.3rem 0.8rem; font-size: 0.55rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 0.15em; z-index: 3;
+        }
+        .item-badge.top { background: var(--accent); color: var(--ink); }
+        .item-badge.new { background: var(--olive); }
+
+        .item-body { padding: 1.4rem 1.4rem 1.5rem; display: flex; flex-direction: column; flex: 1; }
+        .item-body h3 { font-size: 1.2rem; margin-bottom: 0.4rem; font-weight: 500; }
+        .item-body .item-desc {
+            font-size: 0.82rem; color: var(--text-light);
+            margin-bottom: 1rem; line-height: 1.6;
+            flex: 1; font-weight: 300;
+        }
+        .item-meta {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 0.9rem; margin-bottom: 1rem; border-top: 1px solid var(--border);
+        }
+        .item-price {
+            font-family: 'Fraunces', serif; font-weight: 600;
+            font-size: 1.15rem; color: var(--ink);
+        }
+        .item-price small {
+            display: block; font-family: 'Inter', sans-serif;
+            font-size: 0.55rem; color: var(--text-light);
+            text-transform: uppercase; letter-spacing: 0.15em;
+            font-weight: 400; margin-top: 2px;
+        }
+        .item-rating { font-size: 0.65rem; color: var(--accent); letter-spacing: 0.1em; }
+
+        .add-btn {
+            width: 100%; padding: 0.8rem;
+            background: transparent; color: var(--ink);
+            border: 1px solid var(--ink);
+            font-weight: 500; font-size: 0.65rem;
+            cursor: pointer; font-family: inherit;
+            text-transform: uppercase; letter-spacing: 0.18em;
+            transition: all 0.4s; position: relative; overflow: hidden;
+        }
+        .add-btn::before {
+            content: ''; position: absolute; inset: 0;
+            background: var(--ink); transform: translateY(101%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 0;
+        }
+        .add-btn:hover::before { transform: translateY(0); }
+        .add-btn:hover { color: var(--cream); }
+        .add-btn > * { position: relative; z-index: 1; }
+        .add-btn.added { background: var(--olive); border-color: var(--olive); color: white; }
+        .add-btn.added::before { display: none; }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 5rem 2rem;
+            display: none;
+        }
+        .no-results.visible { display: block; }
+        .no-results .empty-icon { font-size: 3.5rem; opacity: 0.3; margin-bottom: 1.5rem; }
+        .no-results h3 { font-size: 1.8rem; margin-bottom: 0.8rem; font-weight: 400; }
+        .no-results p { color: var(--text-light); font-size: 0.95rem; font-weight: 300; }
+
+        .load-more-wrap { text-align: center; margin-top: 3rem; }
+        .load-more {
+            padding: 1rem 2.8rem;
+            background: transparent; color: var(--ink);
+            border: 1px solid var(--ink);
+            font-family: inherit; font-weight: 500;
+            font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 0.2em; cursor: pointer;
+            transition: all 0.4s; position: relative; overflow: hidden;
+        }
+        .load-more::before {
+            content: ''; position: absolute; inset: 0;
+            background: var(--ink); transform: translateY(101%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 0;
+        }
+        .load-more:hover::before { transform: translateY(0); }
+        .load-more:hover { color: var(--cream); }
+        .load-more > * { position: relative; z-index: 1; }
+
+        .cta-final {
+            background: var(--ink); color: var(--cream);
+            text-align: center; padding: 7rem 3rem;
+            position: relative; overflow: hidden; margin-top: 4rem;
+        }
+        .cta-final::before {
+            content: 'Chipilines';
+            position: absolute; font-family: 'Fraunces', serif;
+            font-style: italic; font-size: 22rem;
+            color: rgba(212, 162, 76, 0.04);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-8deg);
+            white-space: nowrap; pointer-events: none;
+        }
+        .cta-final .cta-eyebrow {
+            display: inline-block; color: var(--accent);
+            font-size: 0.68rem; letter-spacing: 0.35em;
+            text-transform: uppercase; margin-bottom: 1.5rem;
+            position: relative; z-index: 1;
+        }
+        .cta-final h2 {
+            color: var(--cream); font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 1.5rem; font-weight: 400;
+            position: relative; z-index: 1;
+        }
+        .cta-final h2 em { font-style: italic; color: var(--accent); }
+        .cta-final p {
+            color: rgba(250, 247, 242, 0.6);
+            font-size: 1rem; margin-bottom: 3rem;
+            max-width: 540px; margin-left: auto; margin-right: auto;
+            position: relative; z-index: 1;
+            font-weight: 300; line-height: 1.9;
+        }
+        .btn {
+            padding: 1.1rem 2.4rem; text-decoration: none;
+            font-weight: 500; font-size: 0.72rem;
+            text-transform: uppercase; letter-spacing: 0.2em;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex; align-items: center; gap: 10px;
+            border: 1px solid transparent; cursor: pointer;
+            font-family: inherit; position: relative; overflow: hidden;
+        }
+        .cta-final .btn-primary {
+            background: var(--accent); color: var(--ink);
+            border-color: var(--accent);
+            position: relative; z-index: 1;
+        }
+        .cta-final .btn-primary:hover { background: var(--cream); border-color: var(--cream); }
+
+        footer {
+            background: var(--ink); color: rgba(250, 247, 242, 0.5);
+            padding: 5rem 3rem 2rem;
+            border-top: 1px solid rgba(212, 162, 76, 0.15);
+        }
+        .footer-content {
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: 3rem; margin-bottom: 4rem;
+        }
+        .footer-brand {
+            font-family: 'Fraunces', serif; font-size: 1.8rem;
+            color: var(--cream); margin-bottom: 1rem;
+            font-weight: 700; letter-spacing: -0.03em;
+        }
+        .footer-brand em { font-style: italic; color: var(--accent); font-weight: 400; }
+        .footer-col h4 {
+            color: var(--cream); font-family: 'Inter', sans-serif;
+            font-size: 0.68rem; text-transform: uppercase;
+            letter-spacing: 0.3em; margin-bottom: 1.5rem; font-weight: 500;
+        }
+        .footer-col a {
+            display: block; color: rgba(250, 247, 242, 0.5);
+            text-decoration: none; margin-bottom: 0.8rem;
+            font-size: 0.85rem; transition: color 0.3s, padding-left 0.3s;
+            font-weight: 300;
+        }
+        .footer-col a:hover { color: var(--accent); padding-left: 6px; }
+        .footer-col p { font-size: 0.85rem; line-height: 1.9; font-weight: 300; }
+        .footer-bottom {
+            max-width: 1400px; margin: 0 auto; text-align: center;
+            padding-top: 2rem; border-top: 1px solid rgba(212, 162, 76, 0.15);
+            font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase;
+        }
+
+        .cart-overlay { position: fixed; inset: 0; background: rgba(15, 15, 15, 0.6); opacity: 0; visibility: hidden; transition: all 0.4s; z-index: 2000; backdrop-filter: blur(4px); }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+        .cart-drawer {
+            position: fixed; top: 0; right: -460px;
+            width: 460px; max-width: 90vw; height: 100vh;
+            background: var(--surface); z-index: 2001;
+            transition: right 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column;
+            border-left: 1px solid var(--border);
+        }
+        .cart-drawer.active { right: 0; }
+        .cart-header {
+            padding: 2rem; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cart-header h3 { font-size: 1.5rem; font-weight: 500; }
+        .cart-header .cart-eyebrow {
+            display: block; font-size: 0.6rem; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--olive);
+            margin-bottom: 0.4rem; font-family: 'Inter', sans-serif; font-weight: 500;
+        }
+        .cart-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-light); transition: color 0.3s; }
+        .cart-close:hover { color: var(--ink); }
+        .cart-items { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; }
+        .cart-empty { text-align: center; color: var(--text-light); padding: 4rem 1rem; }
+        .cart-empty .empty-icon { font-size: 2.5rem; margin-bottom: 1.5rem; opacity: 0.3; }
+        .cart-empty p { font-family: 'Fraunces', serif; font-size: 1.3rem; font-style: italic; }
+        .cart-empty small { display: block; font-size: 0.72rem; margin-top: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; }
+        .cart-item { display: flex; gap: 1.2rem; padding: 1.3rem 0; border-bottom: 1px solid var(--border); }
+        .cart-item-cover {
+            width: 60px; height: 60px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; background: var(--cream); border: 1px solid var(--border);
+        }
+        .cart-item-info { flex: 1; }
+        .cart-item-info h4 { font-family: 'Fraunces', serif; font-size: 1.05rem; margin-bottom: 0.2rem; font-weight: 500; }
+        .cart-item-info .cart-item-price { font-family: 'Fraunces', serif; font-weight: 600; color: var(--olive); font-size: 0.95rem; }
+        .cart-item-qty { display: flex; align-items: center; gap: 8px; margin-top: 0.5rem; }
+        .cart-item-qty button {
+            width: 24px; height: 24px; border: 1px solid var(--border);
+            background: transparent; cursor: pointer; font-weight: 500;
+            font-size: 0.75rem; color: var(--ink); transition: all 0.3s; font-family: inherit;
+        }
+        .cart-item-qty button:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+        .cart-item-qty span { font-size: 0.82rem; font-weight: 500; }
+        .cart-item-remove {
+            background: none; border: none; color: var(--text-light);
+            cursor: pointer; font-size: 0.66rem; margin-top: 0.4rem;
+            padding: 0; transition: color 0.3s; text-transform: uppercase;
+            letter-spacing: 0.15em; font-family: inherit;
+        }
+        .cart-item-remove:hover { color: var(--olive); }
+        .cart-footer { padding: 2rem; border-top: 1px solid var(--border); }
+        .cart-total {
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+        }
+        .cart-total span:first-child { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-light); }
+        .cart-total span:last-child { font-family: 'Fraunces', serif; font-size: 1.9rem; font-weight: 600; color: var(--ink); }
+        .btn-checkout {
+            width: 100%; padding: 1.1rem;
+            background: var(--ink); color: var(--cream);
+            border: 1px solid var(--ink);
+            font-weight: 500; font-size: 0.7rem; cursor: pointer;
+            font-family: inherit; text-transform: uppercase;
+            letter-spacing: 0.2em; transition: all 0.4s;
+        }
+        .btn-checkout:hover { background: var(--olive); border-color: var(--olive); }
+
+        .whatsapp-float {
+            position: fixed; bottom: 25px; right: 25px;
+            background: #25d366; color: white;
+            width: 55px; height: 55px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            text-decoration: none; z-index: 999;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 1.5rem;
+        }
+        .whatsapp-float:hover { transform: scale(1.15) rotate(10deg); }
+
+        @media (max-width: 900px) { .footer-content { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
+            .nav-links { display: none; }
+            .page-hero { padding: 3rem 1.5rem 1.5rem; }
+            .page-hero h1 { font-size: 2.4rem; }
+            .toolbar { padding: 1rem 1.5rem; gap: 1rem; }
+            .toolbar-right { width: 100%; justify-content: space-between; }
+            .search-box { max-width: none; width: 100%; }
+            .filters { padding: 1rem 1.5rem; }
+            .catalog { padding: 1rem 1.5rem 3rem; }
+            .catalog-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+            .item-image { height: 200px; }
+            .item-image .emoji { font-size: 3rem; }
+            .cta-final { padding: 5rem 1.5rem; }
+            .cta-final h2 { font-size: 2rem; }
+            footer { padding: 3rem 1.5rem 1.5rem; }
+            .footer-content { grid-template-columns: 1fr; gap: 2rem; }
+            .whatsapp-float { width: 50px; height: 50px; font-size: 1.3rem; }
+        }
+        @media (max-width: 480px) {
+            .catalog-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scroll-progress" id="scrollProgress"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <div class="top-bar">
+        <div class="top-bar-track">
+            <span>Envíos a toda Venezuela</span>
+            <span>#1 en decoración infantil</span>
+            <span>Diseño 100% personalizado</span>
+            <span>Hecho a mano con amor</span>
+            <span>Envíos a toda Venezuela</span>
+            <span>#1 en decoración infantil</span>
+            <span>Diseño 100% personalizado</span>
+            <span>Hecho a mano con amor</span>
+        </div>
+    </div>
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo" data-cursor>
+                <strong>Chipilines</strong>
+                <small>Venezuela</small>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" data-cursor>Inicio</a></li>
+                <li><a href="servicios.html" data-cursor>Servicios</a></li>
+                <li><a href="catalogo.html" class="active" data-cursor>Catálogo</a></li>
+                <li><a href="index.html#proceso" data-cursor>Proceso</a></li>
+                <li><a href="servicios.html#cotizacion" data-cursor>Cotizar</a></li>
+            </ul>
+            <button class="cart-icon" onclick="toggleCart()" data-cursor>
+                <span>Cesta</span>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <span class="eyebrow">Catálogo completo</span>
+        <h1>Explora <em>todas las piezas</em></h1>
+        <p>Filtra por categoría, busca por nombre y ordena como prefieras. Cada pieza está lista para personalizar.</p>
+    </section>
+
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar productos...">
+        </div>
+        <div class="toolbar-right">
+            <div class="results-count"><strong id="resultCount">0</strong> resultados</div>
+            <select class="sort-select" id="sortSelect">
+                <option value="featured">Destacados</option>
+                <option value="price-asc">Precio: menor a mayor</option>
+                <option value="price-desc">Precio: mayor a menor</option>
+                <option value="name-asc">Nombre: A - Z</option>
+                <option value="name-desc">Nombre: Z - A</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all" data-cursor>
+            Todos <span class="filter-count" data-count-for="all">0</span>
+        </button>
+        <button class="filter-btn" data-filter="placas" data-cursor>
+            Placas <span class="filter-count" data-count-for="placas">0</span>
+        </button>
+        <button class="filter-btn" data-filter="nombres" data-cursor>
+            Nombres <span class="filter-count" data-count-for="nombres">0</span>
+        </button>
+        <button class="filter-btn" data-filter="cuadros" data-cursor>
+            Cuadros <span class="filter-count" data-count-for="cuadros">0</span>
+        </button>
+        <button class="filter-btn" data-filter="recuerdos" data-cursor>
+            Recuerdos <span class="filter-count" data-count-for="recuerdos">0</span>
+        </button>
+        <button class="filter-btn" data-filter="habitaciones" data-cursor>
+            Habitaciones <span class="filter-count" data-count-for="habitaciones">0</span>
+        </button>
+        <button class="filter-btn" data-filter="accesorios" data-cursor>
+            Accesorios <span class="filter-count" data-count-for="accesorios">0</span>
+        </button>
+    </div>
+
+    <section class="catalog">
+        <div class="catalog-grid" id="catalogGrid">
+
+            <div class="item" data-cat="placas" data-name="Placa Clásica con Nombre" data-price="25" data-featured="1">
+                <div class="item-image">
+                    <span class="item-badge top">Top</span>
+                    <span class="emoji">🎀</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Placa Clásica con Nombre</h3>
+                    <p class="item-desc">Placa circular con el nombre de tu bebé y detalles florales delicados.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$25 <small>Personalizada</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Placa Clásica con Nombre" data-price="25" data-emoji="🎀"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="placas" data-name="Placa con Aro Decorativo" data-price="32">
+                <div class="item-image">
+                    <span class="emoji">🌸</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Placa con Aro Decorativo</h3>
+                    <p class="item-desc">Placa con aro colgante ideal para puertas. Colores a elección.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$32 <small>Personalizada</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Placa con Aro Decorativo" data-price="32" data-emoji="🌸"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="placas" data-name="Placa Corazón Delicada" data-price="28" data-featured="1">
+                <div class="item-image">
+                    <span class="item-badge new">Nuevo</span>
+                    <span class="emoji">💗</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Placa Corazón Delicada</h3>
+                    <p class="item-desc">Silueta de corazón con nombre en tipografía script. Dulce y atemporal.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$28 <small>Personalizada</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Placa Corazón Delicada" data-price="28" data-emoji="💗"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="placas" data-name="Placa Personalizada XL" data-price="45">
+                <div class="item-image">
+                    <span class="emoji">🖼️</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Placa Personalizada XL</h3>
+                    <p class="item-desc">Formato grande para un impacto visual único. Hasta 50x50 cm.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$45 <small>Personalizada</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Placa Personalizada XL" data-price="45" data-emoji="🖼️"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="nombres" data-name="Nombre en Acrílico Clásico" data-price="30" data-featured="1">
+                <div class="item-image">
+                    <span class="item-badge top">Popular</span>
+                    <span class="emoji">✿</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Nombre en Acrílico Clásico</h3>
+                    <p class="item-desc">Acrílico de primera con tipografía script elegante y montaje en pared.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$30 <small>Personalizado</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Nombre en Acrílico Clásico" data-price="30" data-emoji="✿"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="nombres" data-name="Nombre con Corona" data-price="38">
+                <div class="item-image">
+                    <span class="emoji">👑</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Nombre con Corona</h3>
+                    <p class="item-desc">Acrílico con corona dorada. Perfecto para princesas y príncipes.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$38 <small>Premium</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Nombre con Corona" data-price="38" data-emoji="👑"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="nombres" data-name="Nombre Iluminado LED" data-price="55" data-featured="1">
+                <div class="item-image">
+                    <span class="item-badge new">Nuevo</span>
+                    <span class="emoji">💡</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Nombre Iluminado LED</h3>
+                    <p class="item-desc">Nombre en acrílico con luz LED integrada. Mágico de noche.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$55 <small>Con LED</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Nombre Iluminado LED" data-price="55" data-emoji="💡"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="cuadros" data-name="Cuadro Significado del Nombre" data-price="20">
+                <div class="item-image">
+                    <span class="emoji">📖</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Cuadro Significado del Nombre</h3>
+                    <p class="item-desc">Diseño elegante con el significado del nombre. Un detalle con alma.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$20 <small>Por unidad</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Cuadro Significado del Nombre" data-price="20" data-emoji="📖"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="cuadros" data-name="Cuadro con Frase Personalizada" data-price="22">
+                <div class="item-image">
+                    <span class="emoji">📜</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Cuadro con Frase Personalizada</h3>
+                    <p class="item-desc">Cualquier frase especial dedicada a tu bebé, en diseño artesanal.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$22 <small>Personalizado</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Cuadro con Frase Personalizada" data-price="22" data-emoji="📜"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="cuadros" data-name="Set Tríptico Decorativo" data-price="48" data-featured="1">
+                <div class="item-image">
+                    <span class="item-badge top">Set</span>
+                    <span class="emoji">🎨</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Set Tríptico Decorativo</h3>
+                    <p class="item-desc">Tres cuadros coordinados para un espacio con personalidad.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$48 <small>Set de 3</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Set Tríptico Decorativo" data-price="48" data-emoji="🎨"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="recuerdos" data-name="Recuerdos para Bautizo" data-price="12" data-featured="1">
+                <div class="item-image">
+                    <span class="item-badge top">Eventos</span>
+                    <span class="emoji">🕊️</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Recuerdos para Bautizo</h3>
+                    <p class="item-desc">Detalles personalizados con nombre y fecha. Delicados y memorables.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$12 <small>Por unidad</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Recuerdos para Bautizo" data-price="12" data-emoji="🕊️"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="recuerdos" data-name="Recuerdos para Baby Shower" data-price="10">
+                <div class="item-image">
+                    <span class="emoji">🦋</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Recuerdos para Baby Shower</h3>
+                    <p class="item-desc">Detalles únicos para baby showers. Con nombre y fecha del evento.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$10 <small>Por unidad</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Recuerdos para Baby Shower" data-price="10" data-emoji="🦋"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="recuerdos" data-name="Recuerdos para Cumpleaños" data-price="11">
+                <div class="item-image">
+                    <span class="emoji">🎂</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Recuerdos para Cumpleaños</h3>
+                    <p class="item-desc">Recuerdos temáticos para cumpleaños infantiles. Diseños a elección.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$11 <small>Por unidad</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Recuerdos para Cumpleaños" data-price="11" data-emoji="🎂"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="recuerdos" data-name="Recuerdos para Boda" data-price="15" data-featured="1">
+                <div class="item-image">
+                    <span class="item-badge new">Nuevo</span>
+                    <span class="emoji">💍</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Recuerdos para Boda</h3>
+                    <p class="item-desc">Detalles elegantes para el día más especial. Personalizados para la pareja.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$15 <small>Por unidad</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Recuerdos para Boda" data-price="15" data-emoji="💍"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="habitaciones" data-name="Habitación Completa Personalizada" data-price="0" data-featured="1">
+                <div class="item-image">
+                    <span class="item-badge top">Proyecto</span>
+                    <span class="emoji">🏠</span>
+                    <span class="photo-hint">Foto del proyecto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Habitación Completa</h3>
+                    <p class="item-desc">Diseñamos y decoramos la habitación completa de tu bebé. Murales, adhesivos y detalles únicos.</p>
+                    <div class="item-meta">
+                        <div class="item-price">Cotizar <small>Proyecto completo</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Habitación Completa" data-price="0" data-emoji="🏠"><span>+ Solicitar cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="habitaciones" data-name="Mural Personalizado para Pared" data-price="120">
+                <div class="item-image">
+                    <span class="emoji">🌈</span>
+                    <span class="photo-hint">Foto del proyecto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Mural Personalizado</h3>
+                    <p class="item-desc">Mural decorativo para una pared específica. Diseño temático a elección.</p>
+                    <div class="item-meta">
+                        <div class="item-price">Desde $120 <small>Según tamaño</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Mural Personalizado" data-price="120" data-emoji="🌈"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="habitaciones" data-name="Set de Adhesivos Decorativos" data-price="45">
+                <div class="item-image">
+                    <span class="emoji">✨</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Set de Adhesivos Decorativos</h3>
+                    <p class="item-desc">Set de adhesivos murales coordinados. Perfecto para decorar sin obra.</p>
+                    <div class="item-meta">
+                        <div class="item-price">Desde $45 <small>Por set</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Set de Adhesivos Decorativos" data-price="45" data-emoji="✨"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="accesorios" data-name="Vinilo Adhesivo Personalizado" data-price="18">
+                <div class="item-image">
+                    <span class="emoji">🏷️</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Vinilo Adhesivo Personalizado</h3>
+                    <p class="item-desc">Vinilo de alta duración para cualquier superficie. Diseño a tu medida.</p>
+                    <div class="item-meta">
+                        <div class="item-price">Desde $18 <small>Por unidad</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Vinilo Adhesivo Personalizado" data-price="18" data-emoji="🏷️"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+            <div class="item" data-cat="accesorios" data-name="Calendario de Crecimiento" data-price="40" data-featured="1">
+                <div class="item-image">
+                    <span class="item-badge new">Nuevo</span>
+                    <span class="emoji">📏</span>
+                    <span class="photo-hint">Foto del producto</span>
+                </div>
+                <div class="item-body">
+                    <h3>Calendario de Crecimiento</h3>
+                    <p class="item-desc">Medidor de altura decorativo con el nombre del bebé. Recuerdo para toda la vida.</p>
+                    <div class="item-meta">
+                        <div class="item-price">$40 <small>Personalizado</small></div>
+                        <div class="item-rating">★★★★★</div>
+                    </div>
+                    <button class="add-btn" data-name="Calendario de Crecimiento" data-price="40" data-emoji="📏"><span>+ Añadir a cotización</span></button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="no-results" id="noResults">
+            <div class="empty-icon">🔍</div>
+            <h3>Sin resultados</h3>
+            <p>No encontramos productos con esos filtros. Intenta con otra búsqueda.</p>
+        </div>
+
+        <div class="load-more-wrap" id="loadMoreWrap">
+            <button class="load-more" id="loadMoreBtn" data-cursor>
+                <span>Ver más productos</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="cta-final">
+        <span class="cta-eyebrow">Comienza tu proyecto</span>
+        <h2>¿Lista para <em>empezar</em>?</h2>
+        <p>Añade las piezas a tu cotización y envía tu pedido por WhatsApp. Te respondemos en minutos.</p>
+        <a href="servicios.html#cotizacion" class="btn btn-primary" data-cursor>
+            <span>Cotizar ahora</span>
+            <span>→</span>
+        </a>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="footer-brand">Chipilines <em>Venezuela</em></div>
+                <p style="font-size:0.85rem; line-height:1.9;">#1 en decoración infantil en Venezuela. Piezas de autor diseñadas y fabricadas con dedicación artesanal.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <a href="catalogo.html">Placas con nombre</a>
+                <a href="catalogo.html">Nombres en acrílico</a>
+                <a href="catalogo.html">Habitaciones</a>
+                <a href="catalogo.html">Recuerdos</a>
+            </div>
+            <div class="footer-col">
+                <h4>Atención</h4>
+                <a href="servicios.html#cotizacion">Cotizar</a>
+                <a href="index.html#proceso">Proceso</a>
+                <a href="#">Envíos</a>
+                <a href="#">Contacto</a>
+            </div>
+            <div class="footer-col">
+                <h4>Redes</h4>
+                <a href="https://www.instagram.com/chipilinesve/" target="_blank">Instagram</a>
+                <a href="https://linktr.ee/chipilinesve" target="_blank">Linktree</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © MMXXVI Chipilines Venezuela · Todos los derechos reservados
+        </div>
+    </footer>
+
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <div>
+                <span class="cart-eyebrow">— Tu pedido —</span>
+                <h3>La cesta</h3>
+            </div>
+            <button class="cart-close" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter" style="display:none;">
+            <div class="cart-total">
+                <span>Total estimado</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="btn-checkout" onclick="window.location.href='servicios.html#cotizacion'">
+                Continuar cotización
+            </button>
+        </div>
+    </div>
+
+    <a href="https://wa.me/584120000000?text=Hola!%20Quiero%20información%20sobre%20decoración%20personalizada" target="_blank" class="whatsapp-float" data-cursor>💬</a>
+
+    <script>
+        const WHATSAPP_NUMBER = "584120000000";
+
+        const cursorDot = document.getElementById('cursorDot');
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+        });
+        document.querySelectorAll('[data-cursor], a, button, input, select, textarea').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorDot.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursorDot.classList.remove('hover'));
+        });
+
+        const progress = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement;
+            const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+            progress.style.width = pct + '%';
+        });
+
+        let activeCategory = 'all';
+        let activeSort = 'featured';
+        let searchQuery = '';
+        let visibleCount = 12;
+        const PAGE_SIZE = 6;
+
+        const grid = document.getElementById('catalogGrid');
+        const allItems = Array.from(grid.querySelectorAll('.item'));
+        const noResults = document.getElementById('noResults');
+        const loadMoreWrap = document.getElementById('loadMoreWrap');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const resultCountEl = document.getElementById('resultCount');
+
+        const counts = { all: allItems.length };
+        allItems.forEach(item => {
+            const cat = item.dataset.cat;
+            counts[cat] = (counts[cat] || 0) + 1;
+        });
+        document.querySelectorAll('[data-count-for]').forEach(el => {
+            const key = el.dataset.countFor;
+            el.textContent = counts[key] || 0;
+        });
+
+        function render() {
+            let filtered = allItems.filter(item => {
+                const matchCat = activeCategory === 'all' || item.dataset.cat === activeCategory;
+                const matchSearch = !searchQuery || item.dataset.name.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            filtered = filtered.slice().sort((a, b) => {
+                switch(activeSort) {
+                    case 'price-asc': return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                    case 'price-desc': return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                    case 'name-asc': return a.dataset.name.localeCompare(b.dataset.name);
+                    case 'name-desc': return b.dataset.name.localeCompare(a.dataset.name);
+                    default:
+                        const aF = a.dataset.featured === '1' ? 1 : 0;
+                        const bF = b.dataset.featured === '1' ? 1 : 0;
+                        return bF - aF;
+                }
+            });
+
+            allItems.forEach(item => {
+                item.classList.add('hidden');
+                item.classList.remove('animate-in');
+            });
+
+            const toShow = filtered.slice(0, visibleCount);
+            toShow.forEach((item, index) => {
+                item.classList.remove('hidden');
+                item.style.animationDelay = (index * 0.03) + 's';
+                void item.offsetWidth;
+                item.classList.add('animate-in');
+            });
+
+            resultCountEl.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                noResults.classList.add('visible');
+                loadMoreWrap.style.display = 'none';
+            } else {
+                noResults.classList.remove('visible');
+                loadMoreWrap.style.display = filtered.length > visibleCount ? 'block' : 'none';
+            }
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeCategory = btn.dataset.filter;
+                visibleCount = 12;
+                render();
+            });
+        });
+
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                searchQuery = e.target.value.trim();
+                visibleCount = 12;
+                render();
+            }, 200);
+        });
+
+        document.getElementById('sortSelect').addEventListener('change', (e) => {
+            activeSort = e.target.value;
+            render();
+        });
+
+        loadMoreBtn.addEventListener('click', () => {
+            visibleCount += PAGE_SIZE;
+            render();
+        });
+
+        document.querySelectorAll('.item').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+                const rotX = (y - 0.5) * 5;
+                const rotY = (x - 0.5) * -5;
+                card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+        });
+
+        let cart = JSON.parse(localStorage.getItem('chipilinesCart') || '[]');
+        function saveCart() { localStorage.setItem('chipilinesCart', JSON.stringify(cart)); renderCart(); }
+        function addToCart(name, price, emoji) {
+            const existing = cart.find(i => i.name === name);
+            if (existing) existing.qty++;
+            else cart.push({ name, price, emoji, qty: 1 });
+            saveCart();
+        }
+        function changeQty(name, delta) {
+            const item = cart.find(i => i.name === name);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) cart = cart.filter(i => i.name !== name);
+            saveCart();
+        }
+        function removeFromCart(name) { cart = cart.filter(i => i.name !== name); saveCart(); }
+
+        function renderCart() {
+            const count = cart.reduce((sum, i) => sum + i.qty, 0);
+            const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            document.getElementById('cartCount').textContent = count;
+
+            const itemsEl = document.getElementById('cartItems');
+            const footerEl = document.getElementById('cartFooter');
+
+            if (cart.length === 0) {
+                itemsEl.innerHTML = `<div class="cart-empty"><div class="empty-icon">♡</div><p>Tu cesta está vacía</p><small>Añade piezas para cotizar</small></div>`;
+                footerEl.style.display = 'none';
+            } else {
+                footerEl.style.display = 'block';
+                document.getElementById('cartTotal').textContent = '$' + total.toFixed(2);
+                itemsEl.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-cover">${item.emoji}</div>
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <div class="cart-item-price">${item.price > 0 ? '$' + item.price : 'A cotizar'}</div>
+                            <div class="cart-item-qty">
+                                <button onclick="changeQty('${item.name}', -1)">−</button>
+                                <span>${item.qty}</span>
+                                <button onclick="changeQty('${item.name}', 1)">+</button>
+                            </div>
+                            <button class="cart-item-remove" onclick="removeFromCart('${item.name}')">Eliminar</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.querySelectorAll('.add-btn').forEach(btn => {
+                const name = btn.dataset.name;
+                const inCart = cart.some(i => i.name === name);
+                const span = btn.querySelector('span');
+                if (inCart) {
+                    btn.classList.add('added');
+                    span.textContent = '✓ Añadido (' + cart.find(i => i.name === name).qty + ')';
+                } else {
+                    btn.classList.remove('added');
+                    span.textContent = btn.dataset.name === 'Habitación Completa' ? '+ Solicitar cotización' : '+ Añadir a cotización';
+                }
+            });
+        }
+
+        document.querySelectorAll('.add-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addToCart(btn.dataset.name, parseFloat(btn.dataset.price), btn.dataset.emoji);
+            });
+        });
+
+        function toggleCart() {
+            document.getElementById('cartDrawer').classList.toggle('active');
+            document.getElementById('cartOverlay').classList.toggle('active');
+        }
+
+        render();
+        renderCart();
+    </script>
+
+</body>
+</html>
